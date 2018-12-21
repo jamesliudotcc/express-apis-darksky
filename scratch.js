@@ -11,8 +11,9 @@ geocoder.geocode('Seattle, WA', (err, data) => {
         console.log('Error', err);
       } else {
         var result = JSON.parse(body);
-        var timezone = result.timezone;
+
         forecastArray = result.daily.data.map(day => {
+          var timezone = result.timezone;
           return {
             timeStamp: moment.tz(day.time * 1000, timezone).format('dddd'),
             condition: day.summary,

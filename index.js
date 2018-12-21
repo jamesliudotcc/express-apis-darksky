@@ -3,6 +3,7 @@ var dotenv = require('dotenv').config();
 var geocoder = require('simple-geocoder');
 var express = require('express');
 var layouts = require('express-ejs-layouts');
+var moment = require('moment-timezone');
 var parser = require('body-parser');
 var request = require('request');
 
@@ -40,7 +41,16 @@ app.post('/', function(req, res) {
           var result = JSON.parse(body);
           currentTemperature = result.currently.temperature;
           currentCondition = result.currently.summary.toLowerCase();
-          forecastArray = [];
+          forecastArray = result.daily.data.map(day => {
+            var timezone = result.timezone;
+            return {
+              timeStamp: moment.tz(day.time * 1000, timezone).format('dddd'),
+              condition: day.summary.toLowerCase(),
+              tempHi: day.temperatureHigh,
+              tempLo: day.temperatureLow,
+            };
+          });
+          console.log(forecastArray[4]);
           console.log(currentTemperature);
           res.render('result', {
             now: { temp: currentTemperature, condition: currentCondition },

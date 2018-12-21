@@ -39,8 +39,13 @@ app.post('/', function(req, res) {
         } else {
           var result = JSON.parse(body);
           currentTemperature = result.currently.temperature;
+          currentCondition = result.currently.summary.toLowerCase();
+          forecastArray = [];
           console.log(currentTemperature);
-          res.render('result', { currentTemperature: currentTemperature });
+          res.render('result', {
+            now: { temp: currentTemperature, condition: currentCondition },
+            forecast: forecastArray,
+          });
         }
       }
     );

@@ -48,6 +48,15 @@ app.post('/', function(req, res) {
               condition: day.summary.toLowerCase(),
               tempHi: day.temperatureHigh,
               tempLo: day.temperatureLow,
+              emoji: day.summary.toLowerCase().includes('snow')
+                ? '❄️'
+                : day.summary.toLowerCase().includes('rain')
+                ? '☔️️️️'
+                : day.summary.toLowerCase().includes('sun')
+                ? '☀️'
+                : day.summary.toLowerCase().includes('cloud')
+                ? '☁️'
+                : '☔️', // Defaults to just bring an umbrella, this is Seattle
             };
           });
           console.log(forecastArray[4]);

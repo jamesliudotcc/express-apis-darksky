@@ -19,9 +19,25 @@ geocoder.geocode('Seattle, WA', (err, data) => {
             condition: day.summary,
             tempHi: day.temperatureHigh,
             tempLo: day.temperatureLow,
+            emoji: day.summary.toLowerCase().includes('snow')
+              ? '❄️'
+              : day.summary.toLowerCase().includes('rain')
+              ? '☔️️️️'
+              : day.summary.toLowerCase().includes('sun')
+              ? '☀️'
+              : day.summary.toLowerCase().includes('cloud')
+              ? '☁️'
+              : '☔️',
           };
         });
-        console.log(forecastArray[4]);
+        console.log(forecastArray);
+
+        // forecastIcon = forecastArray.map(forecast => {
+        //   if (forecast.condition.toLowerCase().includes('fog')) {
+        //     return 'fog';
+        //   }
+        // });
+        // console.log(forecastIcon);
       }
     }
   );

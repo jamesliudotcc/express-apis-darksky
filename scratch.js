@@ -1,19 +1,8 @@
 var dotenv = require('dotenv').config();
 var geocoder = require('simple-geocoder');
+var moment = require('moment-timezone');
 var request = require('request');
-var moment = require('moment');
-require.config({
-  paths: {
-    moment: './node_modules/moment',
-  },
-});
-define(['./node_modules/moment-timezones'], function(moment) {
-  moment()
-    .tz('America/Los_Angeles')
-    .format();
-});
 
-/*
 geocoder.geocode('Seattle, WA', (err, data) => {
   request(
     `${process.env.DARK_SKY_URL}${data.y},${data.x}`,
@@ -22,10 +11,20 @@ geocoder.geocode('Seattle, WA', (err, data) => {
         console.log('Error', err);
       } else {
         var result = JSON.parse(body);
-        console.log(result.daily.data[0].summary);
+        var timezone = result.timezone;
+        forecastArray = result.daily.data.map(day => {
+          return {
+            timeStamp: moment.tz(day.time * 1000, timezone).format('dddd'),
+            condition: day.summary,
+            tempHi: day.temperatureHigh,
+            tempLo: day.temperatureLow,
+          };
+        });
+        console.log(forecastArray[4]);
       }
     }
   );
 });
-*/
-console.log(momentTimezone('America/Los_Angeles').format());
+
+// Moment timezone working
+//console.log(moment.tz(1545379200 * 1000, 'America/Los_Angeles').format('dddd'));
